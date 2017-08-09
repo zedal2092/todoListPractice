@@ -35,11 +35,11 @@ export default class TodoItem extends Component {
     return (
       <InputField
         autoFocus
-        placeHolder="編輯待辦事項"
-        defaultvalue={title}
+        placeholder="編輯待辦事項"
+        value={title}
         onBlur={this.toggleEditMode}
         checked={this.props.completed}
-        onkeyDown={(e) => {
+        onKeyDown={(e) => {
           if (e.keyCode === 27) {
             e.preventDefault();
             this.toggleEditMode();

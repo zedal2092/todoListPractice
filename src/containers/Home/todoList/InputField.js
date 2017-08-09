@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 
 export default class InputField extends Component {
   static propTypes = {
-    onKeyDown: PropTypes.string,
+    onKeyDown: PropTypes.func,
     onSubmitEditing: PropTypes.func,
     value: PropTypes.string,
+    placeholder: PropTypes.string,
+    onBlur: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
     // this.handleKeyDown = this.handleKeyDown.bind(this);
     // this.handleChange = this.handleChange.bind(this);
     this.state = { value: props.value || ''};
-    console.log(context);
   }
   handleChange = (e) => {
     this.setState({ value: e.target.value });
@@ -22,22 +23,29 @@ export default class InputField extends Component {
     const {value} = this.state;
     switch (e.keyCode) {
       case 13:
-        if (value.trim()) {
+        if (value.trim() && onSubmitEditing) {
           onSubmitEditing(value);
+          // onSubmitEditing(value);
         }
         this.setState({ value: '' });
         break;
       default :
         break;
     }
-    onKeyDown(e);
+    // onKeyDown && onKeyDown(e);
+    if (onKeyDown) { onKeyDown(e); }
   }
   render() {
-  // const {placeholder} = this.props;
+    const {placeholder, onBlur} = this.props;
     return (
       <div>
         <input
-          {...this.props} type="text" onKeyDown={this.handleKeyDown}
+          // {...this.props}
+          onBlur={onBlur}
+          autoFocus
+          placeholder={placeholder} type="text"
+          value={this.state.value}
+          onKeyDown={this.handleKeyDown}
           onChange={this.handleChange} />
       </div>
     );
